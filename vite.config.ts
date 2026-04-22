@@ -6,9 +6,22 @@ import react from '@vitejs/plugin-react'
 import tailwindcss from '@tailwindcss/vite'
 
 // https://vite.dev/config/
+function publicSiteBase(): string {
+  const fromVite = (process.env.VITE_SITE_URL || '').trim()
+  if (fromVite) {
+    return fromVite.replace(/\/$/, '')
+  }
+  // Railway : domaine public injecté en build (sans https)
+  const railway = (process.env.RAILWAY_PUBLIC_DOMAIN || '').trim()
+  if (railway) {
+    return `https://${railway}`.replace(/\/$/, '')
+  }
+  return ''
+}
+
 export default defineConfig(({ mode }): UserConfig => {
-  const env = loadEnv(mode, process.cwd(), '')
-  const siteUrl = (env.VITE_SITE_URL || '').replace(/\/$/, '')
+  const env = loadEnv(mode, process.cwd(), 'VITE_')
+  const siteUrl = (env.VITE_SITE_URL || publicSiteBase()).replace(/\/$/, '')
 
   const publicDir = join(dirname(fileURLToPath(import.meta.url)), 'public')
   let imageSize = { w: 1200, h: 630 }
