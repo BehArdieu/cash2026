@@ -1,0 +1,22 @@
+@import 'tailwindcss';
+
+@theme {
+  --font-display: 'Outfit', system-ui, sans-serif;
+  --font-sans: 'DM Sans', system-ui, sans-serif;
+  --color-surface-950: #0a0c10;
+  --color-surface-900: #12151c;
+  --color-surface-800: #1a1f2a;
+  --color-mint-400: #4ade9b;
+  --color-mint-500: #22c55e;
+}
+
+@layer base {
+  html {
+    @apply antialiased;
+  }
+  body {
+    @apply min-h-dvh text-zinc-200 font-sans;
+    background: radial-gradient(ellipse 120% 80% at 50% -20%, #1e3a2f 0%, transparent 50%),
+      var(--color-surface-950);
+  }
+}
