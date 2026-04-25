@@ -5,6 +5,25 @@ type Props = {
   ready: boolean
 }
 
+function getFunMessage(percent: number): string {
+  if (percent >= 100) {
+    return 'Objectif explosé, vous êtes officiellement une légende.'
+  }
+  if (percent >= 85) {
+    return 'Dernière ligne droite: tenez bon, la victoire est à portée.'
+  }
+  if (percent >= 60) {
+    return 'Très solide! Vous avancez comme un pro de la finance.'
+  }
+  if (percent >= 35) {
+    return 'Le rythme est bon, chaque euro vous rapproche du sommet.'
+  }
+  if (percent >= 10) {
+    return 'Bon départ! Continuez comme ça, ça monte bien.'
+  }
+  return 'Mode échauffement activé: le plus dur, c est de commencer.'
+}
+
 const money = new Intl.NumberFormat('fr-FR', {
   style: 'currency',
   currency: 'EUR',
@@ -23,6 +42,7 @@ export function ProgressHero({ percent, target, current, ready }: Props) {
     !ready || target <= 0
       ? '—'
       : `${Math.round(percent * 10) / 10}`.replace('.', ',') + ' %'
+  const funMessage = ready && target > 0 ? getFunMessage(percent) : null
 
   return (
     <div className="relative flex flex-col items-center text-center">
@@ -42,6 +62,11 @@ export function ProgressHero({ percent, target, current, ready }: Props) {
           <span className="text-mint-400">{moneyDetailed.format(current)}</span>
           <span> sur </span>
           <span className="text-zinc-200">{money.format(target)}</span>
+        </p>
+      )}
+      {funMessage && (
+        <p className="mt-3 max-w-md text-balance text-sm font-medium text-mint-300">
+          {funMessage}
         </p>
       )}
       {ready && target <= 0 && (
